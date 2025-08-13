@@ -62,7 +62,19 @@ http://localhost:3000/index_rsa.html
       ```bash
       http.request.method == "POST"
       ```
-      
+UML Diagrams:
+- Class Diagram/Domain Model:
+![Class Diagram/Domain Model](/01.PNG)
+
+- Use Case Diagram:
+![Use Case Diagram](/02.PNG)
+ 
+- Activity Diagram:
+![Activity Diagram 1](/03.PNG)
+![Activity Diagram 2](/04.PNG)
+ 
+- Sequence Diagram:
+![Sequence Diagram](/05.PNG)
   
   
 
