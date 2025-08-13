@@ -32,16 +32,17 @@ npm install
 npm start
 ```
 ## Pages
--Plain Login:
+- Plain Login:
 ```bash
 http://localhost:3000/index_plain.html
 ```
-  -Sends username/password in plain HTTP.
--RSA Login:
+  - Sends username/password in plain HTTP.
+
+- RSA Login:
 ```bash
 http://localhost:3000/index_rsa.html
 ```
-  -Encrypts password using RSA-OAEP (SHA-256) in the browser before sending.
+  - Encrypts password using RSA-OAEP (SHA-256) in the browser before sending.
 ## Capturing Packets in Wireshark
 -Start the server and open Wireshark.
 
