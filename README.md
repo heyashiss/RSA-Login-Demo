@@ -31,7 +31,7 @@ cd rsa-login-demo
 npm install
 npm start
 ```
-##Pages
+## Pages
 -Plain Login:
 ```bash
 http://localhost:3000/index_plain.html
@@ -42,20 +42,26 @@ http://localhost:3000/index_plain.html
 http://localhost:3000/index_rsa.html
 ```
   -Encrypts password using RSA-OAEP (SHA-256) in the browser before sending.
-##Capturing Packets in Wireshark
+## Capturing Packets in Wireshark
 -Start the server and open Wireshark.
 
 -Select the Loopback interface (lo on Linux/Mac or Npcap Loopback Adapter on Windows).
--Using Filters to Zero in on Login Traffic
-  -Capture filter:
+
+
+- Using Filters to Zero in on Login Traffic:
+  
+  - Capture filter:
     ```bash
     tcp.port==3000
     ```
-  -HTTP Login Traffic: 
-    -Most websites send login information using HTTP POST requests (usually for submitting form data). To filter for those, use:
+    
+ - HTTP Login Traffic:
+   
+    - Most websites send login information using HTTP POST requests (usually for submitting form data). To filter for those, use:
       ```bash
-     http.request.method == "POST"
+      http.request.method == "POST"
       ```
+      
   
   
 
