@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>RSA-encrypted Login (demo)</title>
+</head>
+<body>
+  <h1>RSA-encrypted Login (password encrypted in browser)</h1>
+  <form id="rsaForm">
+    <label>Username: <input id="username" name="username" /></label><br />
+    <label>Password: <input id="password" type="password" /></label><br />
+    <button type="submit">Login (RSA)</button>
+  </form>
+
+  <pre id="log"></pre>
+
+  <script>
+    // Helpers to convert PEM to ArrayBuffer
+    function pemToArrayBuffer(pem) {
+      // remove header/footer
+      const b64 = pem.replace(/-----.*?-----/g, '').replace(/\s+/g, '');
+      const raw = atob(b64);
+      const arr = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; ++i) arr[i] = raw.charCodeAt(i);
+      return arr.buffer;
+    }
+
+    async function loadPublicKey() {
+      const res = await fetch('/publicKey');
+      const pem = await res.text();
+      const spki = pemToArrayBuffer(pem);
+      return window.crypto.subtle.importKey(
+        'spki',
+        spki,
+        { name: 'RSA-OAEP', hash: 'SHA-256' },
+        true,
+        ['encrypt']
+      );
+    }
+
+    async function encryptPassword(publicKey, password) {
+      const enc = new TextEncoder().encode(password);
+      const encrypted = await window.crypto.subtle.encrypt(
+        { name: 'RSA-OAEP' },
+        publicKey,
+        enc
+      );
+      return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+    }
+
+    (async () => {
+      const log = document.getElementById('log');
+      const publicKey = await loadPublicKey();
+      log.textContent = 'Public key loaded. You may submit the form.';
+
+      document.getElementById('rsaForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value || '';
+        const password = document.getElementById('password').value || '';
+        const encryptedB64 = await encryptPassword(publicKey, password);
+
+        // Send encrypted password as JSON
+        const resp = await fetch('/login-rsa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password: encryptedB64 })
+        });
+
+        const j = await resp.json();
+        log.textContent = 'Server response:\n' + JSON.stringify(j, null, 2);
+      });
+    })();
+  </script>
+</body>
+</html>
