@@ -26,7 +26,7 @@ It includes:
 
 ## Installation
 ```bash
-git clone https://github.com/your-username/rsa-login-demo.git
+git clone https://github.com/heyashiss/RSA-Login-Demo.git
 cd rsa-login-demo
 npm install
 npm start
